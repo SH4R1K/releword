@@ -1,16 +1,23 @@
-# This is a sample Python script.
+from natasha import (
+    Segmenter,
+    MorphVocab,
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+    NewsEmbedding,
+    NewsMorphTagger,
+    NewsSyntaxParser,
+    NewsNERTagger,
 
+    PER,
+    NamesExtractor,
+    DatesExtractor,
+    MoneyExtractor,
+    AddrExtractor,
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+    Doc
+)
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+segmenter = Segmenter()
+text = "Иван кот приехал в бот и уехал кот"
+doc = Doc(text)
+doc.segment(segmenter)
+print(doc)
