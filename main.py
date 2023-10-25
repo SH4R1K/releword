@@ -31,7 +31,18 @@ doc.tag_morph(morph_tagger)
 doc.parse_syntax(syntax_parser)
 
 sent = doc.sents[0]
-#print(sent.syntax)
+print()
+syntax = sent.syntax
+print(syntax.tokens[1])
+for token in syntax.tokens:
+    p = morph.parse(token.text)[0]
+    if (p.normal_form == "кошка"):
+        headId = token.id
+        print("-------")
+        for token2 in syntax.tokens:
+            if (token2.head_id == headId or token2.id == headId):
+                print(token2.text)
+        print("-------")
 #sent.syntax.print()
 #print(doc.spans[0])
 '''tokens = segmenter.tokenize(text)
