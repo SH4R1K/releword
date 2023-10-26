@@ -7,8 +7,9 @@ from natasha import (
 )
 import pymorphy2
 import re
-def find_phrases(text):
 
+
+def find_phrases(text):
     morph = pymorphy2.MorphAnalyzer(lang="ru")
     segmenter = Segmenter()
 
@@ -32,20 +33,24 @@ def find_phrases(text):
                 headId = token.id
                 for token2 in syntax.tokens:
                     p = morph.parse(token2.text)[0]
-                    if ((token2.head_id == headId or token2.id == headId) and (token2.rel == "amod" or p.normal_form == "кошка")):
+                    if ((token2.head_id == headId or token2.id == headId) and (
+                            token2.rel == "amod" or p.normal_form == "кошка")):
                         text = text + f"{token2.text} "
                 massive += [text.strip()]
     return " ".join(massive)
 
+
 def get_list_sentences(fileName):
     with open(fileName, "r", encoding="utf-8") as file:
+        morph = pymorphy2.MorphAnalyzer(lang="ru")
         sentences = []
         text = file.read()
         segmenter = Segmenter()
         doc = Doc(text)
         doc.segment(segmenter)
         for i in doc.sents:
-            sentences += [re.sub(r'[^\w\s]','',  i.text.lower())]
+            for j in i.tokens:
+                if ("кошка" in morph.parse(j.text)[0].normal_form):
+                    sentences += [re.sub(r'[^\w\s]', '', i.text.lower())]
+                    break
         return sentences
-
-
