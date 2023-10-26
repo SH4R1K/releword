@@ -30,13 +30,17 @@ def find_phrases(text):
             p = morph.parse(token.text)[0]
             if (p.normal_form == "кошка"):
                 text = ""
+                hasAmod = False
                 headId = token.id
                 for token2 in syntax.tokens:
                     p = morph.parse(token2.text)[0]
                     if ((token2.head_id == headId or token2.id == headId) and (
                             token2.rel == "amod" or p.normal_form == "кошка")):
                         text = text + f"{token2.text} "
-                massive += [text.strip()]
+                        if (token2.rel == "amod"):
+                            hasAmod = True
+                if hasAmod:
+                    massive += [text.strip()]
     return " ".join(massive)
 
 
