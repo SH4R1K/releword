@@ -6,10 +6,10 @@ import sys
 import releword as rw
 
 
-def load():
+def load(modelFileName):
     data = {'intent': [], 'response': []}  # словарь для хранения данных
 
-    with open("model.txt", "r", encoding="utf-8") as file:  # открываем файл с данными
+    with open(modelFileName, "r", encoding="utf-8") as file:  # открываем файл с данными
         for line in file:  # читаем файл построчно
             row = line.split("|")  # разбиваем строку на массив
             data['intent'] += [row[0]]  # добавляем вопрос в словарь
@@ -32,8 +32,8 @@ def train_test_split(data, validation_split=0.2):  # функция разбие
     }
 
 
-def model():
-    data = load()  # загружаем данные
+def model(inputFileName, modelFileName):
+    data = load(modelFileName)  # загружаем данные
     sample = train_test_split(data)  # разбиваем выборку на обучающую и тестовую
     pipeline = Pipeline([
         ('tfidf', TfidfVectorizer()),  # tfidf векторизация текста (преобразование текста в вектор)
@@ -41,12 +41,19 @@ def model():
     ])  # создаем модель
 
     pipeline.fit(sample['train']['x'], sample['train']['y'])  # обучаем модель
-    predicted = pipeline.predict(sample['train']['x'])  # предсказываем результаты обучающей выборки
-    print(np.mean(predicted == sample['train']['y']))  # считаем точность обучающей выборки
-    for intent in rw.get_list_sentences("text.txt"):
+    #predicted = pipeline.predict(sample['train']['x'])  # предсказываем результаты обучающей выборки
+    #print(np.mean(predicted == sample['train']['y']))  # считаем точность обучающей выборки
+    #
+    intents = rw.get_list_sentences(inputFileName)
+    predicted = pipeline.predict(intents)
+    #for i in range(len(intents)):
+    #    print(f"{rw.find_phrases(intents[i])} - {predicted[i].strip()}")
+    return intents, predicted
+    #
+    ''' for intent in rw.get_list_sentences("text.txt"):
         intents = [intent]
         predicted = pipeline.predict(intents)  # предсказываем результаты тестовой выборки
-        print(f"{rw.find_phrases(intent)} - {predicted[0].strip()}")  # выводим результат
+        print(f"{rw.find_phrases(intent)} - {predicted[0].strip()}")  # выводим результат '''
 
 
 if __name__ == '__main__':

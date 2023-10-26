@@ -1,7 +1,8 @@
 import releword as rw
 import model
-m = rw.find_phrases("Красная кошка Маруся приехала в бот и улетела на крюке кошке в стратосферу. Ботинки кошки плотно зацепились за скалу.")
-print(m)
-print(rw.get_list_sentences("text.txt"))
-model.model()
+intents, predicts = model.model("text.txt", "model.txt")
+for i in range(len(intents)):
+    print(f"{rw.find_phrases(intents[i])} - {predicts[i].strip()}")
+
+
 

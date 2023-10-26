@@ -35,7 +35,7 @@ def find_phrases(text):
                     if ((token2.head_id == headId or token2.id == headId) and (token2.rel == "amod" or p.normal_form == "кошка")):
                         text = text + f"{token2.text} "
                 massive += [text.strip()]
-    return massive
+    return " ".join(massive)
 
 def get_list_sentences(fileName):
     with open(fileName, "r", encoding="utf-8") as file:
@@ -46,8 +46,7 @@ def get_list_sentences(fileName):
         doc = Doc(text)
         doc.segment(segmenter)
         for i in doc.sents:
-            p = morph.parse(i.text)[0]
-           # print(p)
+            #p = morph.parse(i.text)[0]
             #if ("кошка" in p.normal_form):
             sentences += [re.sub(r'[^\w\s]','',  i.text.lower())]
         return sentences
