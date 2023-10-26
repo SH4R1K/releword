@@ -31,7 +31,8 @@ def find_phrases(text):
                 text = ""
                 headId = token.id
                 for token2 in syntax.tokens:
-                    if (token2.head_id == headId or token2.id == headId):
+                    p = morph.parse(token2.text)[0]
+                    if ((token2.head_id == headId or token2.id == headId) and (token2.rel == "amod" or p.normal_form == "кошка")):
                         text = text + f"{token2.text} "
                 massive += [text.strip()]
     return massive

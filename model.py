@@ -46,7 +46,7 @@ def model():
     for intent in rw.get_list_sentences("text.txt"):
         intents = [intent]
         predicted = pipeline.predict(intents)  # предсказываем результаты тестовой выборки
-        print(f"{intent} - {predicted[0].strip()}")  # выводим результат
+        print(f"{rw.find_phrases(intent)} - {predicted[0].strip()}")  # выводим результат
 
 
 if __name__ == '__main__':
