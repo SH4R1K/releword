@@ -2,7 +2,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer  # skleran для к
 from sklearn.linear_model import SGDClassifier
 from sklearn.pipeline import Pipeline
 import numpy as np  # numpy для работы с массивами
-import sys
 import releword as rw
 
 
@@ -41,20 +40,6 @@ def model(inputFileName, modelFileName):
     ])  # создаем модель
 
     pipeline.fit(sample['train']['x'], sample['train']['y'])  # обучаем модель
-    #predicted = pipeline.predict(sample['train']['x'])  # предсказываем результаты обучающей выборки
-    #print(np.mean(predicted == sample['train']['y']))  # считаем точность обучающей выборки
-    #
     intents = rw.get_list_sentences(inputFileName)
     predicted = pipeline.predict(intents)
-    #for i in range(len(intents)):
-    #    print(f"{rw.find_phrases(intents[i])} - {predicted[i].strip()}")
     return intents, predicted
-    #
-    ''' for intent in rw.get_list_sentences("text.txt"):
-        intents = [intent]
-        predicted = pipeline.predict(intents)  # предсказываем результаты тестовой выборки
-        print(f"{rw.find_phrases(intent)} - {predicted[0].strip()}")  # выводим результат '''
-
-
-if __name__ == '__main__':
-    sys.exit(model())
