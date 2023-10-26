@@ -8,9 +8,7 @@ types = ["прямое значение", "переносное значение
 intents, predicts = model.model(inputFileName, modelFileName)
 for type in types:
     for i in range(len(intents)):
-        phrase = rw.find_phrases(intents[i])
-        if (predicts[i].strip() == type and len(phrase) > 0):
-            print(f"{i+1}. {phrase} - {predicts[i].strip()}")
-
-
-
+        if (predicts[i].strip() == type):
+            phrase = rw.find_phrases(intents[i])
+            if (len(phrase) > 0):
+                print(f"{i + 1}. {phrase} - {predicts[i].strip()}")
