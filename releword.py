@@ -1,12 +1,13 @@
+from natasha import (
+    Segmenter,
+    NewsEmbedding,
+    NewsMorphTagger,
+    NewsSyntaxParser,
+    Doc
+)
+import pymorphy2
+import re
 def find_phrases(text):
-    from natasha import (
-        Segmenter,
-        NewsEmbedding,
-        NewsMorphTagger,
-        NewsSyntaxParser,
-        Doc
-    )
-    import pymorphy2
 
     morph = pymorphy2.MorphAnalyzer(lang="ru")
     segmenter = Segmenter()
@@ -32,6 +33,18 @@ def find_phrases(text):
                 for token2 in syntax.tokens:
                     if (token2.head_id == headId or token2.id == headId):
                         text = text + f"{token2.text} "
-                massive = massive + [text.strip()]
+                massive += [text.strip()]
     return massive
+
+def get_list_sentences(fileName):
+    with open(fileName, "r", encoding="utf-8") as file:
+        sentences = []
+        text = file.read()
+        segmenter = Segmenter()
+        doc = Doc(text)
+        doc.segment(segmenter)
+        for i in doc.sents:
+            sentences += [re.sub(r'[^\w\s]','',  i.text.lower())]
+        return sentences
+
 
