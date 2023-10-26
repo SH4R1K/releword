@@ -8,6 +8,13 @@ from natasha import (
 import pymorphy2
 import re
 
+with open("banWords.txt", 'r', encoding='utf-8') as f1:
+    words = f1.read().split()
+def check_ban_word(sentence):
+    for word in words:
+        if word in sentence:
+            return True
+    return False
 
 def find_phrases(text):
     morph = pymorphy2.MorphAnalyzer(lang="ru")
@@ -54,6 +61,8 @@ def get_list_sentences(fileName):
         doc.segment(segmenter)
         for i in doc.sents:
             for j in i.tokens:
+                if(check_ban_word(i.text)):
+                    break
                 if ("кошка" in morph.parse(j.text)[0].normal_form):
                     sentences += [re.sub(r'[^\w\s]', '', i.text.lower())]
                     break
