@@ -38,12 +38,16 @@ def find_phrases(text):
 
 def get_list_sentences(fileName):
     with open(fileName, "r", encoding="utf-8") as file:
+        morph = pymorphy2.MorphAnalyzer(lang="ru")
         sentences = []
         text = file.read()
         segmenter = Segmenter()
         doc = Doc(text)
         doc.segment(segmenter)
         for i in doc.sents:
+            p = morph.parse(i.text)[0]
+           # print(p)
+            #if ("кошка" in p.normal_form):
             sentences += [re.sub(r'[^\w\s]','',  i.text.lower())]
         return sentences
 
